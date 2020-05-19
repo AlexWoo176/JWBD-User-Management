@@ -106,10 +106,19 @@ public class UserServlet extends HttpServlet {
                 break;
             case "sort":
                 sortUser(request, response);
+            case "permision":
+                addUserPermision(request, response);
+                break;
             default:
                 listUser(request, response);
                 break;
         }
+    }
+
+    private void addUserPermision(HttpServletRequest request, HttpServletResponse response) {
+        User user = new User("Kien", "kienhoang@gmail.com","VietNam");
+        int[] permision = {1, 2, 4};
+        userDao.addUserTransaction(user,permision);
     }
 
     private void sortUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
