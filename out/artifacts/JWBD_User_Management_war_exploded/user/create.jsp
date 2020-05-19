@@ -24,12 +24,6 @@
                 <h2>Add New User</h2>
             </caption>
             <tr>
-                <th>ID:</th>
-                <td>
-                    <input type="text" name="name" id="id" size="45"/>
-                </td>
-            </tr>
-            <tr>
                 <th>FullName:</th>
                 <td>
                     <input type="text" name="name" id="name" size="45"/>

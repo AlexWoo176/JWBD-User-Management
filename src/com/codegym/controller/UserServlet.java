@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "UserServlet", urlPatterns = "/users")
@@ -28,7 +29,11 @@ public class UserServlet extends HttpServlet {
         }
         switch (action) {
             case "create":
-                addUser(request, response);
+                try {
+                    addUser(request, response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "edit":
                 updateUser(request, response);
@@ -70,12 +75,13 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void addUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void addUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String country = request.getParameter("country");
         User user = new User(name, email, country);
-        userDao.insertUser(user);
+//        userDao.insertUser(user);
+        userDao.insertUserStore(user);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/create.jsp");
         dispatcher.forward(request, response);
     }
@@ -129,7 +135,8 @@ public class UserServlet extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        User user = userDao.selectUser(id);
+//        User user = userDao.selectUser(id);
+        User user = userDao.getUserById(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit.jsp");
         request.setAttribute("user", user);
         dispatcher.forward(request, response);
